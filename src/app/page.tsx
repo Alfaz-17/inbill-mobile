@@ -844,21 +844,42 @@ export default function Home() {
 
       </div>
 
-      <script>
-        window.onload = function() {
-          window.print();
-          setTimeout(function() { window.close(); }, 500);
-        }
-      </script>
       </body>
       </html>
     `;
 
-    const printWin = window.open('', '_blank');
-    if (printWin) {
-      printWin.document.open();
-      printWin.document.write(template);
-      printWin.document.close();
+    const scriptId = 'html2pdf-script';
+    let script = document.getElementById(scriptId) as HTMLScriptElement;
+
+    const executeDownload = () => {
+      const container = document.createElement('div');
+      container.innerHTML = template;
+      
+      const opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     `${invoice.invoice_number}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      (window as any).html2pdf().from(container).set(opt).save().then(() => {
+        showToast('PDF downloaded successfully!', 'success');
+      }).catch((err: any) => {
+        console.error('PDF Generation Error:', err);
+      });
+    };
+
+    if (!(window as any).html2pdf) {
+      if (!script) {
+        script = document.createElement('script');
+        script.id = scriptId;
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        script.onload = executeDownload;
+        document.body.appendChild(script);
+      }
+    } else {
+      executeDownload();
     }
   };
 
