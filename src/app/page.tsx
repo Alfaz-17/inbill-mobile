@@ -567,7 +567,7 @@ function HomeComponent() {
     const displayUntaxed = biz.gst_enabled ? untaxedSubtotal : invoice.subtotal;
 
     const template = `
-      <div class="page" style="width: 210mm; height: 297mm; margin: 0; background: #ffffff; padding: 12mm 15mm; box-sizing: border-box; font-family: 'Inter', sans-serif; color: #1e293b; position: relative;">
+      <div class="page" style="width: 210mm; height: 296mm; margin: 0; background: #ffffff; padding: 10mm 15mm; box-sizing: border-box; font-family: 'Inter', sans-serif; color: #1e293b; position: relative; page-break-after: avoid; page-break-inside: avoid;">
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -830,7 +830,7 @@ function HomeComponent() {
         };
 
         // Pass the template HTML string directly! html2pdf handles the rendering isolation in its own iframe!
-        html2pdf().from(template).set(opt).save().then(() => {
+        html2pdf().from(template.trim()).set(opt).save().then(() => {
           showToast('PDF downloaded successfully!', 'success');
         }).catch((err: any) => {
           console.error('PDF Generation Error:', err);
