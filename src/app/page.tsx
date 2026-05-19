@@ -153,7 +153,7 @@ const DEFAULT_PROFILE: BusinessProfile = {
   terms_and_conditions: '1. Goods once sold will not be taken back.\n2. Interest @ 18% will be charged if payment is not made within due date.',
   whatsapp_number: '919988776655',
   instagram_id: 'af_nutrition',
-  gst_enabled: true,
+  gst_enabled: false,
   currency_symbol: '₹',
   logo_url: '',
 };
@@ -184,7 +184,6 @@ export default function Home() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'error' } | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [demoSuccess, setDemoSuccess] = useState(false);
 
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
     setToast({ message, type });
@@ -230,17 +229,7 @@ export default function Home() {
     setInvoiceNumber(`INV-${padded}`);
   };
 
-  const handleLoadDemoData = () => {
-    setCustomerName('Rahul Sharma');
-    setCustomerPhone('9876543210');
-    setCustomerAddress('45, Ocean Heights, Sector 12, Navi Mumbai');
-    setPaymentMode('UPI');
-    setCart([
-      { id: 'demo1', product_name: 'Whey Protein Isolate 1kg (Vanilla)', price: 4200, quantity: 1, gst_rate: 18 },
-      { id: 'demo2', product_name: 'Creatine Monohydrate 250g', price: 950, quantity: 2, gst_rate: 18 }
-    ]);
-    showToast('Demo bill data loaded!', 'info');
-  };
+
 
   const saveProfileSettings = (updated: BusinessProfile) => {
     setProfile(updated);
@@ -969,11 +958,6 @@ export default function Home() {
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {tab === 'new' && (
-            <button className="app-header-logout" onClick={handleLoadDemoData} style={{ fontSize: '10px', padding: '6px 12px', fontWeight: 900, color: 'var(--indigo-600)' }}>
-              {demoSuccess ? 'LOADED ✓' : '⚡ DEMO BILL'}
-            </button>
-          )}
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px', backgroundColor: 'var(--emerald-50)', border: '1px solid rgba(16,185,129,0.2)', padding: '5px 10px', borderRadius: '8px' }}>
             <span style={{ width: '6px', height: '6px', backgroundColor: '#10b981', borderRadius: '50%', display: 'inline-block' }}></span>
             <span style={{ fontSize: '9px', fontWeight: 900, color: '#10b981' }}>OFFLINE</span>
