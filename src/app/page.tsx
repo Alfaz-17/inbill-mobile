@@ -438,7 +438,7 @@ function HomeComponent() {
     if (newInvoice.customer_phone) {
       const cleanPhone = newInvoice.customer_phone.replace(/\D/g, '');
       const number = cleanPhone.startsWith('91') ? cleanPhone : '91' + cleanPhone;
-      const msg = `Hi ${newInvoice.customer_name},\nHere is your invoice *#${newInvoice.invoice_number}* from *${profile.business_name || 'us'}*.\n\n📎 *I have saved your PDF Bill. Tap the attachment icon (Document), and Paste (Ctrl+V) the filename "${newInvoice.invoice_number}.pdf" to send it instantly!*`;
+      const msg = `Hi ${newInvoice.customer_name},\nHere is your invoice *#${newInvoice.invoice_number}* from *${profile.business_name || 'us'}*.\n\n📎 *PDF Invoice downloaded. Tap the attachment icon (Document) to select and send it!*`;
       
       setTimeout(() => {
         window.open(`https://wa.me/${number}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -861,10 +861,12 @@ function HomeComponent() {
         const container = document.createElement('div');
         container.innerHTML = template;
         
-        // Temporarily append styled container off-screen to ensure accurate font sizes & widths
-        container.style.position = 'absolute';
-        container.style.left = '-9999px';
+        // Temporarily append styled container behind the main viewport to ensure perfect canvas rendering
+        container.style.position = 'fixed';
+        container.style.left = '0';
         container.style.top = '0';
+        container.style.zIndex = '-9999';
+        container.style.pointerEvents = 'none';
         container.style.width = '794px'; // 210mm wide at 96 DPI
         container.style.background = '#ffffff';
         document.body.appendChild(container);
@@ -932,7 +934,7 @@ function HomeComponent() {
 
     const cleanPhone = inv.customer_phone.replace(/\D/g, '');
     const number = cleanPhone.startsWith('91') ? cleanPhone : '91' + cleanPhone;
-    const msg = `Hi ${inv.customer_name},\nHere is your invoice *#${inv.invoice_number}* from *${profile.business_name}*.\n\n📎 *I have saved your PDF Bill. Tap the attachment icon (Document), and Paste (Ctrl+V) the filename "${inv.invoice_number}.pdf" to send it instantly!*`;
+    const msg = `Hi ${inv.customer_name},\nHere is your invoice *#${inv.invoice_number}* from *${profile.business_name}*.\n\n📎 *PDF Invoice downloaded. Tap the attachment icon (Document) to select and send it!*`;
     
     setTimeout(() => {
       window.open(`https://wa.me/${number}?text=${encodeURIComponent(msg)}`, '_blank');
